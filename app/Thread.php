@@ -8,6 +8,10 @@ class Thread extends Model
 {
 	protected $guarded = [];
 
+    public function path() {
+        return "/threads/{$this->channel->slug}/{$this->id}";
+    }
+
     public function replies() {
     	return $this->hasMany(Reply::class);
     }

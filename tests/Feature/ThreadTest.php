@@ -64,9 +64,33 @@ class ThreadTest extends TestCase
 
     public function test_a_thread_belongs_to_a_channel() {
 
-        $thread = create('App\Thread');
+        $thread = factory('App\Thread')->create();
 
         $this->assertInstanceOf('App\Channel', $thread->channel);
+    }
+
+    public function test_a_thread_can_make_a_string_path() {
+        $thread = make('App\Thread');
+
+        $this->assertEquals('/threads' . $thread->channel->slug . '/' . $thread->id, $thread->path());
+    }
+
+    public function test_a_thread_requires_a_title() {
+        $this->withExceptionHandling()->signIn();
+
+        $this->post('/threads', $thread)
+            ->assertSessionHas('title');
+    }
+
+    public function test_a_user_can_filter_threads_buy_any_username() {
+        $this->signIn(create('App\User', ['name' => 'JohnDoe']));
+
+        $threadByJohn = create('App\Thread', ['user_id' => auth()->id()]);
+        $threadNotByJohn = create('App\Thread');
+
+        $this->get('threads?by=JohnDoe')
+                ->assertSee($threadByJohn->title);
+                ->assertDontSee($threadNotByJohn->title);
     }
 
 }
