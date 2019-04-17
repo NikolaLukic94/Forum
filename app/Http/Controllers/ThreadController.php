@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+ 
+use Auth;
 use App\Thread;
 use Illuminate\Http\Request;
 
@@ -16,9 +17,13 @@ class ThreadController extends Controller
     {
 
         $threads = Thread::all();
-        
+    
+
+        $mythreads = \App\Thread::where('user_id', Auth::id())->get();
+
         return view('threads.index',[
-            'threads' => $threads
+            'threads' => $threads,
+            'mythreads' => $mythreads
         ]);
     }
 
