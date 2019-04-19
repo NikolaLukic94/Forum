@@ -83,7 +83,12 @@
                                     <a class="dropdown-item" href="/threadsby={{ auth()->user()->name }}">
                                         My Threads
                                     </a>
+                                    <a class="dropdown-item" href="/threads/index">
+                                        Popular Threads
+                                    </a>                                    
                                 </div>
+
+
                             </li>
 
 
