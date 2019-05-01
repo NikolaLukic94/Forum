@@ -19,6 +19,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <!-- CAPTCHA -->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
     <style>
         body { padding-bottom: 100px; }
         .level {
@@ -85,7 +88,10 @@
                                     </a>
                                     <a class="dropdown-item" href="/threads/index">
                                         Popular Threads
-                                    </a>                                    
+                                    </a>  
+                                    <a class="dropdown-item" href="/threads/index">
+                                        My Profile
+                                    </a>                                                                        
                                 </div>
 
 
@@ -108,6 +114,7 @@
                                         @csrf
                                     </form>
                                 </div>
+
                             </li>
 
                         @endguest
@@ -119,6 +126,8 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        <flash message="Temporary message"></flash>    
     </div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -20,9 +21,11 @@
                     <input type="text" name="title">  
                     <input type="text" name="body">
                     <div class="form-group">
-                        <button class="btn btn-primary" type="submit">Post</button>    
-                    </div>
-                </form>
+                    
+
+                    {!! htmlFormSnippet() !!}
+                    <input type="submit">
+
                 @if(count($errors))
                     <ul class="alert alert-danger">
                         @foreach($errors->all() as $error)

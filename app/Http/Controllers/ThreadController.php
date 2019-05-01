@@ -15,11 +15,13 @@ class ThreadController extends Controller
      */
     public function index()
     {
-
         $threads = Thread::all();
-    
 
         $mythreads = \App\Thread::where('user_id', Auth::id())->get();
+
+        if(request()->wantsJson()) {
+            return $threads;
+        }
 
         return view('threads.index',[
             'threads' => $threads,
@@ -45,6 +47,12 @@ class ThreadController extends Controller
      */
     public function store($channelId, Request $request)
     {
+        $this->validate($request, [
+            'title' => 'required',
+            'body' => 'required'
+            'channel_id' => 'required|exists:channels,id'
+        ]);
+
         $thread = Thread::create([
             'user_id' => auth()->id(),
             'channel_id' => request('channel_id'),
@@ -96,8 +104,10 @@ class ThreadController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy($channel, Thread $thread)
     {
-        //
+        $this->authorize('update', $thread);
+        $thread->replies()->delete();
+        $thread->delete();
     }
 }

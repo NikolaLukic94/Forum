@@ -16,9 +16,8 @@ Route::get('/', function () {
 });
 
 
-
-
 Auth::routes();
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -26,7 +25,9 @@ Route::get('/threads','ThreadController@index');
 Route::get('/threads/create','ThreadController@create');
 Route::get('/threads/{channel}/{thread}','ThreadController@show');
 Route::post('threads/create','ThreadController@store');
-
+Route::delete('threads/{channel}/{thread}','ThreadController@destroy');
 Route::post('/threads/{channel}/{thread}/replies','RepliesController@store');
 
 Route::post('/replies/{reply}/favorites','FavoritesController@store');
+
+Route::get('/profiles/{user}','ProfilesController@show');

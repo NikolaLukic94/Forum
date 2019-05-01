@@ -34,5 +34,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         //or use \View::share('channels', \App\Channel::all());
+
+/*
+        Gate::before(function ($user) {
+            if ($user->admin === '1') return true;
+        });*/        
     }
+
 }

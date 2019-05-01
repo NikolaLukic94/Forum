@@ -7,11 +7,18 @@
             <div class="card">
                 <div class="card-header flex">
                     <div class="level">
-                        <a href="#">
+                        <a href="/profiles/{{ $thread->creator->name }}">
                         {{$thread->creator->name}}
                         </a> posted:
                         <b>{{$thread->title}}</b>
                     </div>
+                @can('update', $thread)
+                    <form action="{{$thread->path() }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                        <button type="submit" class="btn btn-link">Delete Thread</button>
+                    </form>
+                @endif
 
                 </div>
                 <div class="card-body">
@@ -20,6 +27,7 @@
         
         @include('threads.reply')
         @if(auth()->check())
+        
         <form method="POST" action="/threads/{{$thread->id}}/replies">
             {{ csrf_field() }}
 
