@@ -71,4 +71,28 @@ class Thread extends Model
              ->where('user_id', $userId ?: auth()->id())
              ->delete();
     }
+
+    public function recordVisits() {
+
+        Redis::incr($this->visitCacheKey());
+
+        return $this;
+    }
+
+    public function visits() {
+
+        return Redis::get($this->visitCacheKey()) ?? 0;
+    }
+
+    public function visitCacheKey() {
+
+        return "threads.{$this->id}.visits";
+    }
+
+    public function resetVisits() {
+
+        Redis::del($this->visitCacheKey());
+
+        return $this;
+    } 
 }

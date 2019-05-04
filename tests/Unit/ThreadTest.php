@@ -78,4 +78,19 @@ class ThreadTest extends TestCase
 
         $this->assertCount(0, $thread->subscriptions);
     }
+
+    public function test_a_thread_records_each_visit()
+    {
+        Redis::del("threads.{$thread->id}.visits");
+
+        $thread = make('App\Thread', ['id' => 1]);
+
+        $thread->recordVisit();
+
+        $this->assertEquals(1, $thread->visits());
+
+        $thread->recordVisit();
+
+        $this->assertEquals(2, $thread->visits());
+    }
 }

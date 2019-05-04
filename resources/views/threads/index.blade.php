@@ -1,30 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Threads:</div>
-
-                <div class="card-body">
-                    @foreach ($threads as $thread)
-                        <article>
-                            <div class="level">
-                                <h4 class="flex">
-                                    <a href="{{$thread->path()}}">{{$thread->title}}</a>
-                                </h4>
-                                <a href="{{ $thread->path() }}">
-                                    <p>{{ $thread->replies()->count() }} {{ str_plural('comment',$thread->replies()->count() ) }}</p>
-                                </a>
-                            </div>
-                        </article>
-                        <div class="body">{{$thread->body}}</div>
-                        <hr>
-                    @endforeach    
+<div class="container"><!-- container -->
+    <div class="row justify-content-center"><!-- row justify-content-center -->
+        <div class="col-md-8"><!-- col-md-8 -->
+            @foreach ($threads as $thread)
+            <div class="card"><!-- card -->
+                <div class="card-header">
+                    <a href="{{$thread->path()}}">{{$thread->title}}</a>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+                <div class="card-body"><!-- card body -->
+                    <article>
+                        <div class="level"><!-- level -->
+                            <a href="{{ $thread->path() }}">
+                                <p>{{ $thread->replies()->count() }} {{ str_plural('comment', $thread->replies()->count() ) }}</p>
+                            </a>
+                        </div><!-- level -->
+                    </article>
+                    <div class="body">
+                        {{$thread->body}}
+                    </div>
+                </div><!-- card body -->
+                <div class="panel-footer"><!-- panel-footer -->
+                    {{ $thread->visits }} Visits
+                </div><!-- panel-footer-->
+            </div><!-- card -->  
+            <br>  
+            @endforeach    
+        </div><!-- col-md-8 -->
+    </div><!-- row justify-content-center -->
+</div><!-- container -->
 @endsection

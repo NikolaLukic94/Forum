@@ -11,7 +11,7 @@ class RepliesController extends Controller
 		$this->middleware('auth');
 	}
 
-	public function store(Thread $thread) {
+	public function store(Reply $reply) {
 		$thread->addReply(request([
 			'body' => request('body'),
 			'user_id' => auth()->id()
