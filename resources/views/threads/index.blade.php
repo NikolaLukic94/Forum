@@ -6,12 +6,12 @@
         <div class="col-md-8"><!-- col-md-8 -->
             @foreach ($threads as $thread)
             <div class="card"><!-- card -->
-                <div class="card-header">
-                    <a href="{{$thread->path()}}">{{$thread->title}}</a>
-                </div>
                 <div class="card-body"><!-- card body -->
                     <article>
                         <div class="level"><!-- level -->
+                            <h4 class="flex">
+                                <a href="{{$thread->path()}}">{{$thread->title}}</a>
+                            </h4>
                             <a href="{{ $thread->path() }}">
                                 <p>{{ $thread->replies()->count() }} {{ str_plural('comment', $thread->replies()->count() ) }}</p>
                             </a>

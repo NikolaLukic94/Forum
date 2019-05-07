@@ -35,7 +35,7 @@ class ParticipateInForum extends TestCase
 
     }
 
-    public function a_reply_requires_a_body() 
+    public function test_a_reply_requires_a_body() 
     {
         $this->withExceptionHandling()->signIn();
 
@@ -46,4 +46,7 @@ class ParticipateInForum extends TestCase
              ->assertSessionHasErrors('body');
     }
 
+    public function test_replies_that_contain_spam_may_not_be_created() {
+        
+    }
 }

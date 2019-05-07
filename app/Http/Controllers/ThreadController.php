@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
  
 use Auth;
+use App\Channel;
 use App\Thread;
 use Illuminate\Http\Request;
 
@@ -10,8 +11,8 @@ class ThreadController extends Controller
 {
     public function index(Channel $channel)
     {
-
         if ($channel->exists) {
+
             $threads = $channel->threads()->latest();
         } else {
             $threads = Thread::latest();
@@ -20,21 +21,17 @@ class ThreadController extends Controller
         if ($username = request('by')) {
             
             $user = \App\User::where('name', $username)->firstOrFail();
-
             $threads->where('user_id', $user->id);
         }
 
         $threads = $threads->get();
-
-//        $mythreads = \App\Thread::where('user_id', Auth::id())->get();
 
         if(request()->wantsJson()) {
             return $threads;
         }
 
         return view('threads.index',[
-            'threads' => $threads,
-//            'mythreads' => $mythreads
+            'threads' => $threads
         ]);
     }
 
@@ -82,5 +79,16 @@ class ThreadController extends Controller
         $this->authorize('update', $thread);
         $thread->replies()->delete();
         $thread->delete();
+    }
+
+    protected function getThreads(Channel $channel, ThreadFilters $filters)
+    {
+        $thread = Thread::latest()->filter($filters);
+
+        if($channel->exists) {
+            $threads->where('channel_id', $channel->id);
+        }
+
+        return $threads->get();
     }
 }

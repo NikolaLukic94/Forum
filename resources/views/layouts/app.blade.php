@@ -83,12 +83,16 @@
                                     <a class="dropdown-item" href="/threads">
                                         All Threads
                                     </a>
-                                    <a class="dropdown-item" href="/threadsby={{ auth()->user()->name }}">
+                                    <a class="dropdown-item" href="/threads?by={{ auth()->user()->name }}">
                                         My Threads
                                     </a>
-                                    <a class="dropdown-item" href="/threads/index">
+                                    <a class="dropdown-item" href="/threads?popular=1">
                                         Popular Threads
-                                    </a>  
+                                    </a>                                      
+                                    <a class="dropdown-item" href="/threads?unanswered=1">
+                                        Unanswered Threads
+                                    </a> 
+
                                     <a class="dropdown-item" href="/threads/index">
                                         My Profile
                                     </a>                                                                        

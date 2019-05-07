@@ -79,4 +79,43 @@ class ThreadTest extends TestCase
         $this->assertEquals([3,2,0], array_colum($response, 'replies_count'));
     }
 
+    public function test_a_users_can_filter_thread_by_those_that_are_unanswered()
+    {
+        $thread = create('App\Thread');
+        create('App\Reply', ['thread_id' => $thread->id ]);
+
+        $response = $this->getJson('threads?unanswered=1')->json();
+
+        $this->assertCount(1, $response);
+    }
+
+    public function test_a_thread_can_be_subscribed_to()
+    {
+        $thread = create('App\Thread');
+
+        $this->signIn();
+
+        $this->subscribe();
+
+        $this->assertEquals(
+            1, 
+            $thread->subscriptions()->where('auth_id', auth()->id()->count()
+        );
+    }
+
+    public function test_a_thread_can_be_unsubscribed_from() {
+
+        $thread = create('App\Thread');
+
+        $thread->subscribe($userId = 1);
+
+        $thread->unsubscribe($userId);
+
+        $this->assertCount(
+            0,
+            $thread->subscriptions
+        );
+
+    }
+
 }

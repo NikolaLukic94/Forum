@@ -95,4 +95,6 @@ class Thread extends Model
 
         return $this;
     } 
+
+
 }
