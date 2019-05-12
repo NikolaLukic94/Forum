@@ -21,9 +21,9 @@
                         {{$thread->body}}
                     </div>
                 </div><!-- card body -->
-                <div class="panel-footer"><!-- panel-footer -->
+                <div class="card-footer text-muted">
                     {{ $thread->visits }} Visits
-                </div><!-- panel-footer-->
+                </div>
             </div><!-- card -->  
             <br>  
             @endforeach    

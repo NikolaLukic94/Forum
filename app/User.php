@@ -43,7 +43,7 @@ class User extends Authenticatable
     }
 
     public function threads() {
-        return $this->hasMany(Thread::class)->latest();
+        return $this->hasMany(Thread::class)->latest(); //to order them from newest to oldest
     }
 
     public function activity() {
