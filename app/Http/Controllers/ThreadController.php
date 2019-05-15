@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
  
+use App\Filters\ThreadFilters;
 use Auth;
 use App\Channel;
 use App\Thread;
@@ -9,22 +10,11 @@ use Illuminate\Http\Request;
 
 class ThreadController extends Controller
 {
-    public function index(Channel $channel)
+    public function index(Channel $channel, ThreadFilters $filters)
     {
-        if ($channel->exists) {
+        $threads = $this->getThreads($chanel, $filters);
 
-            $threads = $channel->threads()->latest();
-        } else {
-            $threads = Thread::latest();
-        }
-        //if requested ('by'), we should filter by the given name
-        if ($username = request('by')) {
-            
-            $user = \App\User::where('name', $username)->firstOrFail();
-            $threads->where('user_id', $user->id);
-        }
 
-        $threads = $threads->get();
 
         if(request()->wantsJson()) {
             return $threads;
