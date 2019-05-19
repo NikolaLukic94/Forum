@@ -11,6 +11,9 @@ class RepliesController extends Controller
 	}
 
 	public function store(Reply $reply) {
+
+		$this->validate(request(), ['body' => 'required|spamfree']);
+
 		$thread->addReply(request([
 			'body' => request('body'),
 			'user_id' => auth()->id()
@@ -18,5 +21,15 @@ class RepliesController extends Controller
 
 	return back();
 
+	}
+
+	public function update(Reply $reply, Spam $spam) {
+
+		$this->authorize('update', $reply);
+
+		$this->validate(request(), ['body' => 'required|spamfree']);
+		$spam->detect(request('body'));
+
+		$reply->update(request('body'));
 	}
 }

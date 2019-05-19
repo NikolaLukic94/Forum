@@ -10,7 +10,7 @@ class Reply extends Model
 
 	protected $guarded = [];
 
-    protected $with = ['owner','favorites'];
+    protected $with = ['owner','favorites']; //call the relationship for every single query
 
     protected $appends = ['favoritesCount','isFavorited'];
 /*
@@ -36,4 +36,8 @@ class Reply extends Model
  		return $this->belongsTo(Thread::class);
     }
 
+    public function path() {
+
+        return $this->thread->path() . "#reply-{$this->id}";
+    }
 }

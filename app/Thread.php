@@ -32,8 +32,8 @@ class Thread extends Model
 
     public function replies() {
     	return $this->hasMany(Reply::class)
-                    ->withCount('favorites')
-                    ->with('owner');
+                 /*   ->withCount('favorites') //reducing the number or SQL queries if done this way instead of calling a relationship in view
+                    ->with('owner')*/;
     }
 
     public function creator() {
@@ -53,6 +53,14 @@ class Thread extends Model
         });
 
         return $reply;
+    }
+
+    public function notifySubscribers($reply) {
+
+        $this->subscriptions
+             ->where('user_id', '!=', $reply->user_id)
+             ->each
+             ->notify($reply);
     }
 
     public function channel() {
@@ -115,6 +123,13 @@ class Thread extends Model
                     ->where('user_id', auth()->id())
                     ->exists();
 
+    }
+
+    public function hasUpdatesFor($user) {
+
+        $key = $user->visitedThreadCacheKey($this);
+
+        return $this->updated_at > cache($key);
     }
 
 }

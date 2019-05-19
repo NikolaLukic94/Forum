@@ -10,7 +10,11 @@
                     <article>
                         <div class="level"><!-- level -->
                             <h4 class="flex">
+                                @if($thread->hasUpdatesFor(auth()->user()))
+                                <b><a href="{{$thread->path()}}">{{$thread->title}}</a></b>
+                                @else
                                 <a href="{{$thread->path()}}">{{$thread->title}}</a>
+                                @endif
                             </h4>
                             <a href="{{ $thread->path() }}">
                                 <p>{{ $thread->replies()->count() }} {{ str_plural('comment', $thread->replies()->count() ) }}</p>
