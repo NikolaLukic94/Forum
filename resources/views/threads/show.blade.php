@@ -8,6 +8,7 @@
                 <div class="card-header"><!-- card-header -->
                     <div class="level"><!-- level -->
                         <span class="flex">
+                            <img src="{{ asset($thread->creator->avatar()) }}" alt="{{ $thread->creator->name }}" width="25" height="25" class="mr-1">
                             <a href="/profiles/{{ $thread->creator->name }}">
                             {{$thread->creator->name}}
                             </a> posted:

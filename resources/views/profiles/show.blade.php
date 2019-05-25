@@ -10,6 +10,16 @@
 			Since {{ $profileUser->created_at->diffForHumans() }}
 			</small>
 		</h1>
+		@can('update', $profileUser)
+			<form method="POST" action="{{ route('avatar', $profileUser) }}" enctype="multipart/form-data">
+				{{  csrf_filed() }}
+				<input type="file" name="file">
+
+				<button type="submit" class="btn btn-primary">Add avatar</button>
+			</form>
+
+			<img src="{{ asset($profileUser->avatar()) }}" width="50" height="50">
+		@endcan
 	</div>	
 	</div>
 	<br>

@@ -23,7 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/threads','ThreadController@index');
 Route::get('/threads/create','ThreadController@create');
-Route::post('/threads/create','ThreadController@store');
+Route::post('/threads/create','ThreadController@store')->middleware('must-be-confirmed');
 Route::get('/threads/{channel}/{thread}','ThreadController@show');
 Route::delete('/threads/{channel}/{thread}','ThreadController@destroy');
 Route::post('threads/create','ThreadController@store');
@@ -41,4 +41,4 @@ Route::get('/profiles/{user}/notifications', 'UserNotificationController@index')
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationController@destroy');
 
 Route::get('api/users', 'Api\UsersController@index');
-Route::post('api/users/{user}/avatar','Api\UserAvatarController@store')->middleware('auth');
+Route::post('api/users/{user}/avatar','Api\UserAvatarController@store')->middleware('auth')->name('avatar');
