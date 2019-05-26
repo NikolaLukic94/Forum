@@ -17,7 +17,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar_path'
+        'name', 'email', 'password', 'avatar_path', 'confirmation_token', 'confirmed'
+    ];
+
+    /* to always be treated as boolean */
+
+    protected $casts = [
+        'confirmed' => 'boolean'
     ];
 
     /**
@@ -37,6 +43,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function confirm() {
+        $this->confirmed = true;
+        $this->confirmation_token = null;
+
+        $this->save();
+    }
 
     public function getRouteKeyName() {
         return 'name';

@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class PleaseConfromYourEmail extends Mailable
+class PleaseConfrimYourEmail extends Mailable implements ShouldQueue //so we can use queue
 {
     use Queueable, SerializesModels;
 
@@ -28,6 +28,6 @@ class PleaseConfromYourEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->markdown('emails.confirm-email');
     }
 }

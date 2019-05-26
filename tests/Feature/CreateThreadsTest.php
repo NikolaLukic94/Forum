@@ -31,7 +31,7 @@ class CreateThreadsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $thread = create('App\Thread');
+        $thread = create('App\Thread')->states('unconfirmed')->create();
 
         $response = $this->delete($thread->path())->assertRedirect('/login');
 
@@ -42,6 +42,10 @@ class CreateThreadsTest extends TestCase
 
     public function test_a_authenticated_users_must_first_confirm_their_email_address()
     {
+        $this->withExceptionHandling();
+
+        $thread = create('App\Thread');
+
         $this->publishThread()
             ->assertRedirect('/threads')
             ->assertSessionHas('flash');
