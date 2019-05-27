@@ -32,6 +32,7 @@ Route::post('/threads/{channel}/{thread}/replies','RepliesController@store');
 Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionController@store')->middleware('auth');
 Route::delete('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionController@destroy')->middleware('auth');
 
+Route::post('/replies/{reply}/best', 'BestReplies@store')->name('best-replies.store');
 
 Route::post('/replies/{reply}/favorites','FavoritesController@store');
 

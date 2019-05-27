@@ -42,7 +42,8 @@ class ThreadController extends Controller
             'user_id' => auth()->id(),
             'channel_id' => request('channel_id'),
             'title' => request('title'),
-            'body' => request('body')
+            'body' => request('body'),
+     //       'slug' => request('title')    SLUG IS BEING SET AUTOMATICALLY BY A MODEL EVEN
         ]);
 
         return redirect('/threads'. $thread->id);

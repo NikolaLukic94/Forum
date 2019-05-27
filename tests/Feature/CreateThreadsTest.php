@@ -8,25 +8,23 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateThreadsTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_a_guest_may_not_create_threads()
+    /** @test **/    
+    public function a_guest_may_not_create_threads()
     {
         $this->withExceptionHandling()
              ->post('threads')
              ->assertRedirect('/login');
     }
 
-    public function test_a_guests_cannot_see_the_thread_page() 
+    /** @test **/
+    public function a_guests_cannot_see_the_thread_page() 
     {
         $this->withExceptionHandling()
              ->get('/threads/create')
              ->assertRedirect('/login');
     }
 
+    /** @test **/
     public function unaouthorized_users_may_not_delete_threads() 
     {
         $this->withExceptionHandling();
@@ -39,8 +37,9 @@ class CreateThreadsTest extends TestCase
 
         $this->delete($thread->path()->assertStatus(403));
     }
-
-    public function test_a_authenticated_users_must_first_confirm_their_email_address()
+    /** @test **/
+    
+    public function a_authenticated_users_must_first_confirm_their_email_address()
     {
         $this->withExceptionHandling();
 
@@ -51,7 +50,8 @@ class CreateThreadsTest extends TestCase
             ->assertSessionHas('flash');
     }
 
-    public function test_a_thread_can_be_deleted() {
+    /** @test **/
+    public function a_thread_can_be_deleted() {
 
         $this->signIn();
 
@@ -66,6 +66,7 @@ class CreateThreadsTest extends TestCase
         $this->assertDatabaseMissin('replies', ['id' => $reply->id]);
     }
 
+    /** @test **/
     public function an_authenticated_user_can_create_new_forum_threads() 
     {
         $this->actingAs(factory('App\User')->create());
@@ -79,19 +80,36 @@ class CreateThreadsTest extends TestCase
              ->assertSee($thread->body);
     }
 
-    public function test_a_thread_requires_a_title() 
+    /** @test **/
+    public function a_thread_requires_a_title() 
     {
         $this->publishThread(['title' => null ])
              ->assertSessionHasErrors('title');
     }
 
-    public function test_a_thread_requires_a_body() 
+    /** @test **/
+    public function a_thread_requires_a_body() 
     {
         $this->publishThread(['body' => null ])
              ->assertSessionHasErrors('body');
     }
 
-    public function test_a_thread_requires_a_valida_channel()
+    /** @test **/
+    public function a_thread_requires_a_unique_slug()
+    {
+        $this->signIn();
+
+        $thread = create('App\Thread', ['title' => 'Foo Title' ]);
+
+        $this->assertEquals($thread->slug, 'foo-title');
+
+        $thread = $this->postJson(route('threads'), $thread->toArray())->json();
+
+        $this->assertEquals("foo-title-{$thread['id']}" . $thread['slug']);
+    }
+
+    /** @test **/
+    public function a_thread_requires_a_valida_channel()
     {
         factory('App\Channel', 2)->create();
 
@@ -103,6 +121,7 @@ class CreateThreadsTest extends TestCase
 
     }
 
+    /** @test **/
     public function publishThread($overrides = [])
     {
         $this->withExceptionHandling->actingAs(create('App\User'));
@@ -112,4 +131,15 @@ class CreateThreadsTest extends TestCase
         return $this->post('/threads', $thread->toArray());
     }
 
+    /** @test **/
+    public function a_thread_with_a_title_that_ends_in_a_num_should_generate_the_proper_slug()
+    {
+        $this->signIn();
+
+        $thread = create('App\Thread', ['title' => 'Foo Title 24' ]);    
+        
+        $this->post(route('threads'), $thread->toArray());
+
+        $this->assertTrue(Thread::whereSlug('some-title-24')->exists());    
+    } 
 }
